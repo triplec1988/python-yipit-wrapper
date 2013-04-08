@@ -193,7 +193,7 @@ class Api(object):
         '''
         
         url = DEALS_URL + deal_id # example: api.yipit.com/vi/deals/16721
-        
+        print url
         try:
             deals = self.get_yipit_list_by_params(url, 'deals')
         except YipitError as err:
@@ -234,6 +234,7 @@ class Api(object):
           yipit.Business (depending on the yipit_type_key given) instances 
           grabbed and processed from the url with the given parameters
         '''
+        print "DEBUG -- Trying to fetch deal json"
         json = self.fetch_url(url, **params)
         
         data = self.parse_and_check_yipit(json)
@@ -601,6 +602,7 @@ class Deal(YipitObject):
       deal._purchased
       deal._source
       deal._tags
+      deal._description
     '''
 
     def __init__(self,
@@ -622,6 +624,7 @@ class Deal(YipitObject):
                  purchased=None,
                  source=None,
                  tags=None,
+                 description=None,
                  **kwargs):
         '''An object to hold a Yipit Deal
 
@@ -716,6 +719,8 @@ class Deal(YipitObject):
                         "slug" : "theater",
                         "url" : ""
                        }]
+           description:
+             A description of the deal which has been pulled
            **kwargs:
              Any extra key/value params that may be added if Yipit's API
              changes and response sends more data than expected
@@ -738,6 +743,7 @@ class Deal(YipitObject):
         self._purchased = purchased
         self._source = source
         self._tags = tags
+        self._description = description
 
     @staticmethod
     def new_from_json_dict(data):
@@ -779,7 +785,8 @@ class Deal(YipitObject):
                                           value = self._value,
                                           purchased = self._purchased,
                                           source = self._source,
-                                          tags = self._tags)
+                                          tags = self._tags,
+                                          description = self._description)
         return data                       
         
 class Source(YipitObject):
