@@ -193,8 +193,9 @@ class Api(object):
         '''
         
         url = DEALS_URL + deal_id # example: api.yipit.com/vi/deals/16721
+        
         try:
-            deals = self.get_deals_list_by_params(url)
+            deals = self.get_yipit_list_by_params(url, 'deals')
         except YipitError as err:
             # this should only raise an error if the id was incorrect
             if err._error_code == 404:
@@ -233,7 +234,6 @@ class Api(object):
           yipit.Business (depending on the yipit_type_key given) instances 
           grabbed and processed from the url with the given parameters
         '''
-
         json = self.fetch_url(url, **params)
         
         data = self.parse_and_check_yipit(json)
